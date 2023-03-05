@@ -4,9 +4,14 @@ import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 import { useState } from "react";
 import Entypo from 'react-native-vector-icons/Entypo';
 
-const SelfieComp: React.FC =() =>{
 
-    const [img, setimg] = useState(null);
+interface selfieProps {
+  setpic: (list: string) => void;
+  pic: string;
+}
+const SelfieComp: React.FC<selfieProps> =({setpic, pic}) =>{
+
+    // const [img, setimg] = useState(null);
 
 
     function ClickingPhotofromgallery() {
@@ -36,7 +41,7 @@ const SelfieComp: React.FC =() =>{
             console.log("users canceled image picker")
           }
           else{
-            setimg(response.assets[0].uri)
+            setpic(response.assets[0].uri)
           }
         })
       }
@@ -48,7 +53,7 @@ const SelfieComp: React.FC =() =>{
 
                  <View style={SelfieStyles.selfiebox}>
                     {
-                        img ? <Image source={{uri:img}} style={SelfieStyles.img} /> :  <Entypo name="camera" size={25}color="#1D3932"/>
+                        pic ? <Image source={{uri:pic}} style={SelfieStyles.img} /> :  <Entypo name="camera" size={25}color="#1D3932"/>
                     }
                  </View>
 

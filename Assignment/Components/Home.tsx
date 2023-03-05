@@ -8,6 +8,7 @@ import SelfieComp from "./SelfieComponent";
 import DropDown from "./DropDown";
 import { addingdetail } from "./Redux/AllactionsSlice";
 import { useDispatch , useSelector} from "react-redux";
+import { addPerson } from "./Redux/NewSlice";
 
 const Home : React.FC =() =>{
 
@@ -30,25 +31,27 @@ const Home : React.FC =() =>{
         setList(newlist);
     }
 
-    const newdata = useSelector(state => state);
+    // const newdata = useSelector(state => state);
 
     // console.log(newdata);
-    useEffect(()=>{
-        // console.log("new data is"  + newdata);
-    },[])
+    // useEffect(()=>{
+    //     // console.log("new data is"  + newdata);
+    // },[])
+    const fltu:string = "prince"
+    const flo:string = "age"
 
     function Savingdata(){
-        console.log("clicked on saving")
+        // console.log("clicked on saving")
         const dta = {
             Name : Names,
             Age : Ages,
             picture : pic,
-            Selfie : List,
+            Tech : List,
             LocationLong : long,
             LocationLat : lat,
             LocationArea : area,
         }
-        dispatch(addingdetail(dta))
+        dispatch(addPerson({dta}));
     }
 
 
@@ -115,7 +118,7 @@ const Home : React.FC =() =>{
 
                           
                           <View>
-                            <SelfieComp />
+                            <SelfieComp setpic={setpic} pic={pic}/>
                           </View>
 
                           <View style={Homestyles.locationcontainer}>
