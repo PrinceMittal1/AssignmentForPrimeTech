@@ -11,9 +11,6 @@ interface selfieProps {
 }
 const SelfieComp: React.FC<selfieProps> =({setpic, pic}) =>{
 
-    // const [img, setimg] = useState(null);
-
-
     function ClickingPhotofromgallery() {
         interface MyImageLibraryOptions {
             storageOption: {
@@ -59,7 +56,7 @@ const SelfieComp: React.FC<selfieProps> =({setpic, pic}) =>{
 
 
                  <View style={{marginTop:20, width:"100%"}}>
-                     <Pressable style={{width:"100%"}} onPress={()=>{ClickingPhotofromgallery()}}>
+                     <Pressable style={{width:"100%"}} onPress={ClickingPhotofromgallery}>
                          <View style={SelfieStyles.takepicturebutton}>
                             <Text style={{fontSize:18, color:"white"}}>Take Picture</Text>
                          </View>

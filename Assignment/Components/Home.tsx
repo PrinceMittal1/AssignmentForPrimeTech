@@ -1,14 +1,15 @@
 import React from "react";
-import { View, Text, ScrollView , TextInput, Pressable, StyleSheet, FlatList} from "react-native";
+import { View, Text, ScrollView , TextInput, Pressable, StyleSheet, FlatList, Alert} from "react-native";
 import AntDesign from "react-native-vector-icons/AntDesign"
 import Entypo from 'react-native-vector-icons/Entypo';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import {useState, useEffect} from "react";
 import SelfieComp from "./SelfieComponent";
 import DropDown from "./DropDown";
-import { addingdetail } from "./Redux/AllactionsSlice";
-import { useDispatch , useSelector} from "react-redux";
+import { useDispatch} from "react-redux";
 import { addPerson } from "./Redux/NewSlice";
+import Homestyles from "./Styles/homestyle";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Home : React.FC =() =>{
 
@@ -22,6 +23,28 @@ const Home : React.FC =() =>{
     const [long, setlong] = useState(null);
     const [lat, setlat] = useState(null);
     const [area, setarea] = useState(null);
+    // const [num, setnum] = useState(null);
+
+
+    const handletask= async()=>{
+        let userprofle = {
+            aName : Names,
+            aAge : Ages,
+            aList : List, 
+            aPic : pic,
+        }
+        if(Names && Ages && List && pic ){
+            try {
+                await AsyncStorage.setItem("userprofile" ,JSON.stringify(userprofle));
+                console.log('Data saved successfully!');
+              } catch (e) {
+                console.log('Error saving data:', e);
+              }
+        }
+        else{
+            Alert.alert("Please fill all detail")
+        }
+    }
 
     const dispatch = useDispatch();
 
@@ -31,28 +54,21 @@ const Home : React.FC =() =>{
         setList(newlist);
     }
 
-    // const newdata = useSelector(state => state);
-
-    // console.log(newdata);
-    // useEffect(()=>{
-    //     // console.log("new data is"  + newdata);
-    // },[])
     const fltu:string = "prince"
     const flo:string = "age"
 
-    function Savingdata(){
-        // console.log("clicked on saving")
-        const dta = {
-            Name : Names,
-            Age : Ages,
-            picture : pic,
-            Tech : List,
-            LocationLong : long,
-            LocationLat : lat,
-            LocationArea : area,
-        }
-        dispatch(addPerson({dta}));
-    }
+    // function Savingdata(){
+    //     const dta = {
+    //         Name : Names,
+    //         Age : Ages,
+    //         picture : pic,
+    //         Tech : List,
+    //         LocationLong : long,
+    //         LocationLat : lat,
+    //         LocationArea : area,
+    //     }
+    //     dispatch(addPerson({dta}));
+    // }
 
 
     return (
@@ -139,7 +155,7 @@ const Home : React.FC =() =>{
                           </View>
 
                           <View style={{marginBottom:60, marginTop:40}}>
-                            <Pressable onPress={()=>{Savingdata()}} >
+                            <Pressable onPress={()=>{handletask()}} >
                                 <View style={{width:"35%",backgroundColor:"#e1e1d0", borderRadius:10, alignSelf:"center", alignItems:"center", padding:5}}>
                                    <Text style={{fontSize:25, color:"#1D3932"}}>save</Text>
                                 </View>
@@ -155,59 +171,3 @@ const Home : React.FC =() =>{
 }
 
 export default Home
-
-const Homestyles = StyleSheet.create({
-    upperbar :{
-        backgroundColor:"#1D3932", 
-        width:"100%", 
-        height:60, 
-        borderBottomRightRadius:60
-    },
-    restscreen:{
-        backgroundColor:"#1D3932", 
-        width:"100%"
-    },
-    restscreenchild:{
-        backgroundColor:"white",
-         width:"100%",
-         borderTopLeftRadius:60
-    },
-    takepicturebutton:{
-        backgroundColor:"#1D3932", 
-        padding:8, 
-        borderRadius:18, 
-        width:"50%", 
-        alignSelf:"center", 
-        alignItems:"center"
-    },
-    selfiebox:{
-        marginTop:35, 
-        borderWidth:1, 
-        width:"85%", 
-        height:150, 
-        borderRadius:5,
-        justifyContent:"center",
-        alignItems:"center"
-    },
-    mylocationbutton:{
-        borderWidth:1, 
-        height:50, 
-        borderRadius:10, 
-        marginTop:10,
-         flexDirection:"row", 
-         justifyContent:"space-around", 
-         alignItems:"center", 
-        padding:5,
-        backgroundColor:"#1D3932"
-    }, 
-    locationcontainer:{
-        marginTop:25,
-        width:"85%", 
-        alignSelf:"center"
-    }, 
-    commonbox:{
-        marginTop:35,
-        width:"85%", 
-        alignSelf:"center"
-    }
-})
