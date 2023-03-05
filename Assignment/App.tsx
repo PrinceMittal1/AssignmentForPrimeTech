@@ -1,14 +1,16 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import MyTabs from './Components/Navigation/MyTab';
+import MyStore from './Components/Redux/Mystore';
+import { Provider } from 'react-redux';
 
 
 const App: React.FC =() => {
   return (
-    <NavigationContainer>
-      <MyTabs />
-    </NavigationContainer>
+    <Provider store={MyStore}>
+      <NavigationContainer>
+         <MyTabs />
+      </NavigationContainer>
+    </Provider>
   );
 }
 

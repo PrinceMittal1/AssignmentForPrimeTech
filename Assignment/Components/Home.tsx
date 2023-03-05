@@ -1,14 +1,55 @@
 import React from "react";
-import { View, Text, ScrollView , TextInput, Pressable, StyleSheet} from "react-native";
+import { View, Text, ScrollView , TextInput, Pressable, StyleSheet, FlatList} from "react-native";
 import AntDesign from "react-native-vector-icons/AntDesign"
 import Entypo from 'react-native-vector-icons/Entypo';
-import {useState} from "react";
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import {useState, useEffect} from "react";
+import SelfieComp from "./SelfieComponent";
+import DropDown from "./DropDown";
+import { addingdetail } from "./Redux/AllactionsSlice";
+import { useDispatch , useSelector} from "react-redux";
 
 const Home : React.FC =() =>{
 
     type NamesState = string | null;
+    type liststate = string[] | null;
+
     const [Names, setNames] = useState<NamesState>(null);
     const [Ages, setAges] = useState<NamesState>(null);
+    const [List, setList] = useState<liststate>([]);
+    const [pic, setpic] = useState<NamesState>(null);
+    const [long, setlong] = useState(null);
+    const [lat, setlat] = useState(null);
+    const [area, setarea] = useState(null);
+
+    const dispatch = useDispatch();
+
+    function removingelemtfromList(index){
+        let newlist = [...List];
+        newlist.splice(index, 1);
+        setList(newlist);
+    }
+
+    const newdata = useSelector(state => state);
+
+    // console.log(newdata);
+    useEffect(()=>{
+        // console.log("new data is"  + newdata);
+    },[])
+
+    function Savingdata(){
+        console.log("clicked on saving")
+        const dta = {
+            Name : Names,
+            Age : Ages,
+            picture : pic,
+            Selfie : List,
+            LocationLong : long,
+            LocationLat : lat,
+            LocationArea : area,
+        }
+        dispatch(addingdetail(dta))
+    }
 
 
     return (
@@ -20,6 +61,8 @@ const Home : React.FC =() =>{
                 <View style={Homestyles.restscreen}>
                     <View style={Homestyles.restscreenchild}>
                         
+
+
                           <View style={Homestyles.commonbox}>
                               <View>
                                   <Text style={{fontSize:17}}>Name</Text>
@@ -54,31 +97,25 @@ const Home : React.FC =() =>{
 
 
                           <View style={Homestyles.commonbox}>
-                              <View><Text>Technology on you want to work</Text></View>
-                              <View>
-                                <TextInput
-                                style={{}}
-                                />
-                              </View>
+                                <View style={{marginBottom:5}}><Text>Select Your Technology</Text></View>
+                               <FlatList 
+                               data={List} 
+                               horizontal={true}
+                               renderItem={({item, index}) => 
+                                <View style={{borderWidth:1, margin:5, padding:5, borderRadius:20, flexDirection:"row", justifyContent:"space-evenly"}}>
+                                    <Text>{item}</Text>
+                                    <Pressable onPress={()=>{removingelemtfromList(index)}}>
+                                        <MaterialIcons name="cancel" size={20} />
+                                    </Pressable>
+                                </View>
+                                }
+                               />
+                               <DropDown setlist={setList} list={List}/>
                           </View>
 
-
-                          <View style={{alignItems:"center"}}>
-
-
-                              <View style={Homestyles.selfiebox}>
-                                 <Entypo name="camera" size={25}color="#1D3932"/>
-                              </View>
-
-
-                              <View style={{marginTop:20, width:"100%"}}>
-                                  <Pressable style={{width:"100%"}}>
-                                      <View style={Homestyles.takepicturebutton}>
-                                         <Text style={{fontSize:18, color:"white"}}>Take Picture</Text>
-                                      </View>
-                                  </Pressable>
-                               </View>
-
+                          
+                          <View>
+                            <SelfieComp />
                           </View>
 
                           <View style={Homestyles.locationcontainer}>
@@ -99,7 +136,7 @@ const Home : React.FC =() =>{
                           </View>
 
                           <View style={{marginBottom:60, marginTop:40}}>
-                            <Pressable>
+                            <Pressable onPress={()=>{Savingdata()}} >
                                 <View style={{width:"35%",backgroundColor:"#e1e1d0", borderRadius:10, alignSelf:"center", alignItems:"center", padding:5}}>
                                    <Text style={{fontSize:25, color:"#1D3932"}}>save</Text>
                                 </View>
