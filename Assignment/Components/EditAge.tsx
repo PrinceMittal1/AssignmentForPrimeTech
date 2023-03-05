@@ -2,7 +2,6 @@ import React from "react";
 import {useEffect, useState} from "react";
 import { View, Text , ScrollView, TextInput, Pressable} from "react-native";
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useSelector } from "react-redux";
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 const EditAge : React.FC =() =>{
@@ -29,7 +28,6 @@ const EditAge : React.FC =() =>{
 
     async function namechanged(){
         Alldata.aAge = age;
-        // console.log(Alldata);r
         try {
             await AsyncStorage.setItem("userprofile" ,JSON.stringify(Alldata));
             console.log('Data saved successfully!');
